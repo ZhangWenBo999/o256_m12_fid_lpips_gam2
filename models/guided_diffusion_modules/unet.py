@@ -394,9 +394,9 @@ class UNet(nn.Module):
 
         ch = input_ch = int(channel_mults[0] * inner_channel)
         
-        self.input_blocks0 = GAM_Attention(in_channels=in_channel, out_channels=in_channel)
+        # self.input_blocks0 = GAM_Attention(in_channels=in_channel, out_channels=in_channel)
         self.input_blocks1 = EmbedSequential(nn.Conv2d(in_channel, ch, 3, padding=1))
-        # self.input_blocks2 = GAM_Attention(in_channels=ch, out_channels=ch)
+        self.input_blocks2 = GAM_Attention(in_channels=ch, out_channels=ch)
 
         self._feature_size = ch
         input_block_chans = [ch]
@@ -540,9 +540,9 @@ class UNet(nn.Module):
 
         h = x.type(torch.float32)
 
-        h = self.input_blocks0(h)
+        # h = self.input_blocks0(h)
         h = self.input_blocks1(h, emb)
-        # h = self.input_blocks2(h)
+        h = self.input_blocks2(h)
         hs.append(h)
         
         for module in self.input_blocks:
